@@ -9,7 +9,7 @@ const logger = require('morgan');
 const db = require("./models");
 const SequelizeSession = require('connect-session-sequelize')(session.Store)
 const store = new SequelizeSession({ db: db.sequelize })
-const usersRouter = require('./routes/api/users');
+const usersRouter = require('./api/users');
 const cors = require("cors");
 
 const app = express();
