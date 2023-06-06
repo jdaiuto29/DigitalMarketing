@@ -35,7 +35,7 @@ function Twitter() {
   
     return (
       <>
-                    <button onClick={authTweet}>Authorize with Twitter</button>
+                    <button onClick={handleTwitterAuth}>Authorize with Twitter</button>
 
               </>
     );
