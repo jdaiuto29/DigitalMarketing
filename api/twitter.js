@@ -13,6 +13,7 @@ function(token, tokenSecret, profile, cb) {
   User.findOne({ where: { id: 3 } }).then((user) => {
     if (user) {
       user.update({ twitter: { token, tokenSecret } });
+      console.log(token, tokenSecret, user)
       return cb(null, user);
     } else {
       res.send('auth didnt work')
@@ -21,7 +22,7 @@ function(token, tokenSecret, profile, cb) {
 }));
 
 router.get('/auth/twitter', async (req, res) => {
-res.json('hello')
+res.json('token', req.params.oauth_token, 'secret', req.params.oauth_verifier)
 })
 ;
 
