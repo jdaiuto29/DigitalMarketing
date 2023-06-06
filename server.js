@@ -45,35 +45,35 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.use('/api/v1/users', usersRouter);
 // app.use('/api/v1/twitter', twitterRouter);
 
+// Configure Twitter authentication strategy
+passport.use(new TwitterStrategy({
+  consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
+  consumerSecret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
+  callbackURL: 'https://walrus-app-zynat.ondigitalocean.app/auth/twitter/callback',
+}, (token, tokenSecret, profile, done) => {
+  // Handle the authenticated user data here
+  // You can save the user details in your database or perform any other required actions
+  console.log('Authenticated User:', profile);
+  console.log('token:', token)
+  console.log('tokenSecret:', tokenSecret)
+  done(null, profile);
+}));
+
+// Initialize Passport
 app.use(passport.initialize());
 
-passport.use(
-  new TwitterStrategy(
-    {
-      consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
-      consumerSecret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
-      callbackURL: 'https://walrus-app-zynat.ondigitalocean.app/twitter/callback',
-    },
-    function (token, tokenSecret, profile, done) {
-      // Handle the user profile obtained from Twitter
-      // You can save the user details in your database and generate a session or JWT token
-      console.log('token', token , 'tokenSecret', tokenSecret)
-      return done(null, profile);
-    }
-  )
-);
-
-// Routes
+// Route for initiating the Twitter authentication flow
 app.get('/auth/twitter', passport.authenticate('twitter'));
-app.get(
-  '/auth/twitter/callback',
+
+// Callback route to handle the Twitter authentication callback
+app.get('/auth/twitter/callback',
   passport.authenticate('twitter', { session: false }),
-  function (req, res) {
-    // Handle successful authentication
-    // You can redirect the user or return an access token
-    res.send('Authentication successful!');
-  }
-);
+  (req, res) => {
+    // Access the authenticated user details from req.user
+    console.log('Authenticated User:', req.user);
+    // Perform any required actions or redirect the user to the appropriate page
+    res.redirect('/home');
+  });
 
 
 
