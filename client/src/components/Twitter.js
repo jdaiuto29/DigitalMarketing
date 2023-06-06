@@ -29,14 +29,13 @@ function Twitter() {
     };
 
     const handleTwitterAuth = () => {
-        axios.get('api/v1/auth/twitter')
-          .then((response) => {
-            console.log(response)
-          })
-          .catch((error) => {
-            // Handle any errors
-            console.error('Twitter authentication error:', error);
-          });
+        axios.get('/api/v1/twitter/authorize?userId=' + currentUser.id)
+  .then(response => {
+    console.log(response)
+  })
+  .catch(error => {
+    // Handle errors
+  });
       };     
     
   
