@@ -13,7 +13,7 @@ function(token, tokenSecret, profile, cb) {
   User.findOne({ where: { id: 1 } }).then((user) => {
     if (user) {
       user.update({ twitter: { token, tokenSecret } });
-      console.log(token, tokenSecret, user)
+      console.log(token, tokenSecret, user, profile)
       return cb(null, user);
     } else {
       res.send('auth didnt work')
