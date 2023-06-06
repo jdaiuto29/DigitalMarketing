@@ -7,7 +7,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const db = require("./models");
-const passport = require('passport');
 const SequelizeSession = require('connect-session-sequelize')(session.Store)
 const store = new SequelizeSession({ db: db.sequelize })
 const usersRouter = require('./api/users');
@@ -40,10 +39,10 @@ app.use(
 store.sync();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-  // Initialize Passport
-app.use(passport.initialize());
+
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/twitter', twitterRouter);
+
 
 // error handler
 app.use(function(err, req, res, next) {
