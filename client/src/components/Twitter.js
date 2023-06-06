@@ -20,7 +20,7 @@ function Twitter() {
   
     const authTweet = async () => {
       try {
-        const response = await axios.get('api/v1/auth/twitter');
+        const response = await axios.get('api/v1/twitter/auth/twitter');
         console.log(response);
 
       } catch (error) {
@@ -29,13 +29,14 @@ function Twitter() {
     };
 
     const handleTwitterAuth = () => {
-        window.location.href = 'https://walrus-app-zynat.ondigitalocean.app/auth/twitter';
+        window.location.href = 'https://walrus-app-zynat.ondigitalocean.app/api/v1/twitter/auth/twitter';
       };
     
   
     return (
       <>
                     <button onClick={handleTwitterAuth}>Authorize with Twitter</button>
+                    <button onClick={authTweet}>Authorize with Twitter Test</button>
 
               </>
     );

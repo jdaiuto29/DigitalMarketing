@@ -1,35 +1,48 @@
 const express = require('express');
 const passport = require('passport');
 const TwitterStrategy = require('passport-twitter').Strategy;
-const User = require('../models/user');
+const model = require('../models');
 const router = express.Router();
 
+// Configure Twitter authentication strategy
 passport.use(new TwitterStrategy({
-  consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
-  consumerSecret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
-  callbackURL: "https://walrus-app-zynat.ondigitalocean.app/twitter/callback"
-},
-function(token, tokenSecret, profile, cb) {
-  User.findOne({ where: { id: 1 } }).then((user) => {
-    if (user) {
-      user.update({ twitter: { token, tokenSecret } });
-      console.log(token, tokenSecret, user, profile)
-      return cb(null, user);
-    } else {
-      res.send('auth didnt work')
+    consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
+    consumerSecret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
+    callbackURL: 'https://walrus-app-zynat.ondigitalocean.app/auth/twitter/callback',
+  }, async (token, tokenSecret, profile, done) => {
+    try {
+      // Find the existing user in the database
+      const user = await model.User.findOne({ where: { id: 1 } });
+  
+      if (user) {
+        // Update the user's Twitter tokens
+        await user.update({ twitter: JSON.stringify({ twitterToken: token, twitterSecret: tokenSecret }) });
+        console.log('User updated:', user);
+        console.log(profile)
+        done(null, user);
+      } else {
+        // Handle the case when the user is not found in the database
+        done(new Error('User not found.'));
+      }
+    } catch (error) {
+      done(error);
     }
-  });
-}));
-
-router.get('/auth/twitter', async (req, res) => {
-res.json('token', req.params.oauth_token, 'secret', req.params.oauth_verifier)
-})
-;
-
-router.get('/auth/twitter/callback', 
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/home');
-  });
+  }));
+  
+  // Initialize Passport
+  router.use(passport.initialize());
+  
+  // Route for initiating the Twitter authentication flow
+  router.get('/auth/twitter', passport.authenticate('twitter'));
+  
+  // Callback route to handle the Twitter authentication callback
+  router.get('/auth/twitter/callback',
+    passport.authenticate('twitter', { session: false }),
+    (req, res) => {
+      // Access the authenticated user details from req.user
+      console.log('Authenticated User:', req.user);
+      // Perform any required actions or redirect the user to the appropriate page
+      res.redirect('/home');
+    });
 
 module.exports = router;
