@@ -29,7 +29,7 @@ function Twitter() {
     };
 
     const handleTwitterAuth = () => {
-        window.location.href = 'https://walrus-app-zynat.ondigitalocean.app/auth/twitter';
+        window.location.href = 'https://walrus-app-zynat.ondigitalocean.app/api/v1/twitter/auth/twitter';
       };      
     
   

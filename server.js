@@ -8,10 +8,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const db = require("./models");
 const passport = require('passport');
-const TwitterStrategy = require('passport-twitter').Strategy;
 const SequelizeSession = require('connect-session-sequelize')(session.Store)
 const store = new SequelizeSession({ db: db.sequelize })
 const usersRouter = require('./api/users');
+const twitterRouter = require('./api/twitter');
 const cors = require("cors");
 
 const app = express();
@@ -42,54 +42,10 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 
 app.use('/api/v1/users', usersRouter);
-// app.use('/api/v1/twitter', twitterRouter);
-
-// Configure Twitter authentication strategy
-passport.use(new TwitterStrategy({
-  consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
-  consumerSecret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
-  callbackURL: 'https://walrus-app-zynat.ondigitalocean.app/auth/twitter/callback',
-  passReqToCallback: true,
-}, async (req, token, tokenSecret, profile, done) => {
-  try {
-    // Assuming you stored user ID in req.session
-    // @ts-ignore
-    const userId = req.session.userId;
-    // Find the existing user in the database
-    console.log(userId)
-    const user = await db.User.findOne({ where: { id: userId } });
-
-    if (user) {
-      // Update the user's Twitter tokens
-      await user.update({ twitter: JSON.stringify({ twitterToken: token, twitterSecret: tokenSecret }) });
-      console.log('User updated:', user);
-      done(null, user);
-    } else {
-      // Handle the case when the user is not found in the database
-      done(new Error('User not found.'));
-    }
-  } catch (error) {
-    done(error);
-  }
-}));
+app.use('/api/v1/twitter', twitterRouter);
 
 // Initialize Passport
 app.use(passport.initialize());
-
-// Route for initiating the Twitter authentication flow
-app.get('/auth/twitter', passport.authenticate('twitter'));
-
-// Callback route to handle the Twitter authentication callback
-app.get('/auth/twitter/callback',
-  passport.authenticate('twitter', { session: false }),
-  (req, res) => {
-    // Access the authenticated user details from req.user
-    console.log('Authenticated User:', req.user);
-    // Perform any required actions or redirect the user to the appropriate page
-    res.redirect('/home');
-  });
-
-
 
 // error handler
 app.use(function(err, req, res, next) {
