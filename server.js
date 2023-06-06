@@ -50,19 +50,22 @@ passport.use(new TwitterStrategy({
   consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
   consumerSecret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
   callbackURL: 'https://walrus-app-zynat.ondigitalocean.app/auth/twitter/callback',
-}, async (token, tokenSecret, profile, done) => {
+  passReqToCallback: true,
+}, async (req, token, tokenSecret, profile, done) => {
   try {
+    // @ts-ignore
+    const userId = req.user.id
     // Find the existing user in the database
-    const user = await db.User.findOne({ where: { id: 1 } });
+    const currentUser = await db.User.findOne({ where: { id: userId} });
 
-    if (user) {
+    if (currentUser) {
       // Update the user's Twitter tokens
-      await user.update({ twitter: JSON.stringify({ twitterToken: token, twitterSecret: tokenSecret }) });
-      console.log('User updated:', user);
+      await currentUser.update({ twitter: JSON.stringify({ twitterToken: token, twitterSecret: tokenSecret }) });
+      console.log('User updated:', currentUser);
       console.log(profile)
       console.log(token)
       console.log(tokenSecret)
-      done(null, user);
+      done(null, currentUser);
     } else {
       // Handle the case when the user is not found in the database
       done(new Error('User not found.'));
@@ -83,7 +86,8 @@ app.get('/auth/twitter/callback',
   passport.authenticate('twitter', { session: false }),
   (req, res) => {
     // Access the authenticated user details from req.user
-    console.log('Authenticated User:', req.user);
+    // @ts-ignore
+    console.log('Authenticated User:', req.user.dataValues.id);
     // Perform any required actions or redirect the user to the appropriate page
     res.redirect('/home');
   });
