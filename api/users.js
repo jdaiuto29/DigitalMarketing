@@ -71,6 +71,7 @@ router.post('/login', (req, res) => {
         const token = jwt.sign({ userId: user.id }, 'your-secret-key'); // Replace 'your-secret-key' with your own secret key
 
         // Send the token and user data as a response
+        req.session.userId = user.id;
         res.json({ token, user });
       });
     })
