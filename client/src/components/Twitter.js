@@ -29,8 +29,15 @@ function Twitter() {
     };
 
     const handleTwitterAuth = () => {
-        window.location.href = 'https://walrus-app-zynat.ondigitalocean.app/api/v1/twitter/auth/twitter';
-      };      
+        axios.get('api/v1/auth/twitter')
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((error) => {
+            // Handle any errors
+            console.error('Twitter authentication error:', error);
+          });
+      };     
     
   
     return (
