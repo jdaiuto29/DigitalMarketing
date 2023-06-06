@@ -16,7 +16,7 @@ passport.use(new TwitterStrategy({
   
       if (user) {
         // Update the user's Twitter tokens
-        await user.update({ twitter: JSON.stringify({ twitterToken: token, twitterSecret: tokenSecret }) });
+        await model.User.update({ twitter: JSON.stringify({ twitterToken: token, twitterSecret: tokenSecret }) });
         console.log('User updated:', user);
         console.log(profile)
         done(null, user);
