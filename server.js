@@ -57,6 +57,7 @@ passport.use(
     function (token, tokenSecret, profile, done) {
       // Handle the user profile obtained from Twitter
       // You can save the user details in your database and generate a session or JWT token
+      console.log('token', token , 'tokenSecret', tokenSecret)
       return done(null, profile);
     }
   )
