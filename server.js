@@ -50,13 +50,24 @@ passport.use(new TwitterStrategy({
   consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
   consumerSecret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
   callbackURL: 'https://walrus-app-zynat.ondigitalocean.app/auth/twitter/callback',
-}, (token, tokenSecret, profile, done) => {
-  // Handle the authenticated user data here
-  // You can save the user details in your database or perform any other required actions
-  console.log('Authenticated User:', profile);
-  console.log('token:', token)
-  console.log('tokenSecret:', tokenSecret)
-  done(null, profile);
+}, async (token, tokenSecret, profile, done) => {
+  try {
+    // Find the existing user in the database
+    const user = await db.User.findOne({ where: { id: 1 } });
+
+    if (user) {
+      // Update the user's Twitter tokens
+      await user.update({ twitter: JSON.stringify({ twitterToken: token, twitterSecret: tokenSecret }) });
+      console.log('User updated:', user);
+      console.log(profile)
+      done(null, user);
+    } else {
+      // Handle the case when the user is not found in the database
+      done(new Error('User not found.'));
+    }
+  } catch (error) {
+    done(error);
+  }
 }));
 
 // Initialize Passport
