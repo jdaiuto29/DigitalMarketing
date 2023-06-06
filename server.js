@@ -54,7 +54,7 @@ passport.use(new TwitterStrategy({
 }, async (req, token, tokenSecret, profile, done) => {
   try {
     // @ts-ignore
-    const userId = req.user.id
+    const userId = req.user.dataValues.id
     // Find the existing user in the database
     const currentUser = await db.User.findOne({ where: { id: userId} });
 
