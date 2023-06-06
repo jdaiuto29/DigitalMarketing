@@ -4,6 +4,8 @@ const models = require('../models'); // Assuming you have a User model defined
 const passport = require('passport');
 const TwitterStrategy = require('passport-twitter').Strategy;
 
+router.use(passport.initialize());
+
 // Configure Twitter authentication strategy
 passport.use(new TwitterStrategy({
     consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
