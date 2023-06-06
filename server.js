@@ -51,8 +51,10 @@ passport.use(new TwitterStrategy({
   callbackURL: 'https://walrus-app-zynat.ondigitalocean.app/auth/twitter/callback',
 }, async (token, tokenSecret, profile, done) => {
   try {
+    const userId = localStorage.getItem('currentUser.id')
     // Find the existing user in the database
-    const user = await db.User.findOne({ where: { id: 1 } });
+    console.log('user', userId)
+    const user = await db.User.findOne({ where: { id: userId } });
 
     if (user) {
       // Update the user's Twitter tokens
