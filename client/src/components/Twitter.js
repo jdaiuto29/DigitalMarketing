@@ -30,13 +30,12 @@ function Twitter() {
 
     const handleTwitterAuth = () => {
         window.location.href = 'https://walrus-app-zynat.ondigitalocean.app/api/v1/twitter/auth/twitter';
-      };
+      };      
     
   
     return (
       <>
                     <button onClick={handleTwitterAuth}>Authorize with Twitter</button>
-                    <button onClick={authTweet}>Authorize with Twitter Test</button>
 
               </>
     );

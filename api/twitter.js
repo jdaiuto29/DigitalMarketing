@@ -29,9 +29,6 @@ passport.use(new TwitterStrategy({
     }
   }));
   
-  // Initialize Passport
-  router.use(passport.initialize());
-  
   // Route for initiating the Twitter authentication flow
   router.get('/auth/twitter', passport.authenticate('twitter'));
   
