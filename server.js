@@ -7,9 +7,12 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const db = require("./models");
+const passport = require('passport');
+const TwitterStrategy = require('passport-twitter').Strategy;
 const SequelizeSession = require('connect-session-sequelize')(session.Store)
 const store = new SequelizeSession({ db: db.sequelize })
 const usersRouter = require('./api/users');
+const twitterRouter = require('./api/twitter');
 const cors = require("cors");
 
 const app = express();
@@ -40,6 +43,36 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 
 app.use('/api/v1/users', usersRouter);
+// app.use('/api/v1/twitter', twitterRouter);
+
+app.use(passport.initialize());
+
+passport.use(
+  new TwitterStrategy(
+    {
+      consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
+      consumerSecret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
+      callbackURL: 'https://walrus-app-zynat.ondigitalocean.app/twitter/callback',
+    },
+    function (token, tokenSecret, profile, done) {
+      // Handle the user profile obtained from Twitter
+      // You can save the user details in your database and generate a session or JWT token
+      return done(null, profile);
+    }
+  )
+);
+
+// Routes
+app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get(
+  '/auth/twitter/callback',
+  passport.authenticate('twitter', { session: false }),
+  function (req, res) {
+    // Handle successful authentication
+    // You can redirect the user or return an access token
+    res.send('Authentication successful!');
+  }
+);
 
 
 

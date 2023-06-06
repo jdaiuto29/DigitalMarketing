@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux'; // Assuming you are using Redux for state management
 import { logout } from '../redux/reducers/userReducer'; // Import the loggedIn action
 import { useNavigate } from "react-router-dom";
+import Twitter from '../components/Twitter';
 
 const Home = () => {
     const currentUser = useSelector((state) => state.user.currentUser);
@@ -24,6 +25,7 @@ const Home = () => {
     <div className="container">
 <h1>Home</h1>
 <h3>Hello {currentUser?.firstName}</h3>
+<Twitter/>
 <Button variant="primary" onClick={handleLogout}>
           Log Out
         </Button>
