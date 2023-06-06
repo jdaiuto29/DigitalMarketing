@@ -10,7 +10,7 @@ passport.use(new TwitterStrategy({
   callbackURL: "https://walrus-app-zynat.ondigitalocean.app/twitter/callback"
 },
 function(token, tokenSecret, profile, cb) {
-  User.findOne({ where: { id: 3 } }).then((user) => {
+  User.findOne({ where: { id: 1 } }).then((user) => {
     if (user) {
       user.update({ twitter: { token, tokenSecret } });
       console.log(token, tokenSecret, user)
