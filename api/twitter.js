@@ -5,7 +5,7 @@ const models = require('../models');
 
 const router = express.Router();
 // Twitter authentication route
-app.get('/auth/twitter', (req, res) => {
+router.get('/auth/twitter', (req, res) => {
     const apiKey = '7tVzrnl36nY4HRuFfgylqbTsw';
     const callbackUrl = 'https://walrus-app-zynat.ondigitalocean.app/auth/twitter/callback';
   
@@ -13,7 +13,7 @@ app.get('/auth/twitter', (req, res) => {
   });
   
   // Callback route to handle the Twitter authentication callback
-  app.get('/auth/twitter/callback', async (req, res) => {
+  router.get('/auth/twitter/callback', async (req, res) => {
     const apiKey = '7tVzrnl36nY4HRuFfgylqbTsw';
     const apiSecretKey = 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm';
     const requestToken = req.query.oauth_token;
