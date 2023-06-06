@@ -19,7 +19,9 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(cors())
+app.use(cors({
+  origin: 'https://walrus-app-zynat.ondigitalocean.app' // Replace with your front-end application's domain
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
