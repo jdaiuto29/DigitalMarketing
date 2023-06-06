@@ -43,29 +43,26 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 
 app.use('/api/v1/users', usersRouter);
-// app.use('/api/v1/twitter', twitterRouter);
+app.use('/api/v1/twitter', twitterRouter);
 
 // Configure Twitter authentication strategy
 passport.use(new TwitterStrategy({
   consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
   consumerSecret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
   callbackURL: 'https://walrus-app-zynat.ondigitalocean.app/auth/twitter/callback',
-  passReqToCallback: true,
-}, async (req, token, tokenSecret, profile, done) => {
+}, async (token, tokenSecret, profile, done) => {
   try {
-    // @ts-ignore
-    const userId = req.user.dataValues.id
     // Find the existing user in the database
-    const currentUser = await db.User.findOne({ where: { id: userId} });
+    const user = await db.User.findOne({ where: { id: 1 } });
 
-    if (currentUser) {
+    if (user) {
       // Update the user's Twitter tokens
-      await currentUser.update({ twitter: JSON.stringify({ twitterToken: token, twitterSecret: tokenSecret }) });
-      console.log('User updated:', currentUser);
+      await user.update({ twitter: JSON.stringify({ twitterToken: token, twitterSecret: tokenSecret }) });
+      console.log('User updated:', user);
       console.log(profile)
       console.log(token)
       console.log(tokenSecret)
-      done(null, currentUser);
+      done(null, user);
     } else {
       // Handle the case when the user is not found in the database
       done(new Error('User not found.'));
