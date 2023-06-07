@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models'); // Assuming you have a User model defined
-const Twit = require('twit');
+const TwitterLite = require('twitter-lite');
 
 // API endpoint to send tweets
 router.post('/tweets', async (req, res) => {
@@ -14,22 +14,22 @@ router.post('/tweets', async (req, res) => {
       return res.status(404).json({ error: 'User tokens not found' });
     }
 
-const twitterToken = user.twitter.twitterToken
-const twitterSecret = user.twitter.twitterSecret
-
-console.log(twitterToken);
-console.log(twitterSecret);
-
-    const twitClient = new Twit({
+    const twitterClient = new TwitterLite({
       consumer_key: '7tVzrnl36nY4HRuFfgylqbTsw',
       consumer_secret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
-      access_token: "1665087749051895809-bzo58Xfbq8WT39zWFL0ANTClsH86Wo",
+      access_token_key: "1665087749051895809-bzo58Xfbq8WT39zWFL0ANTClsH86Wo",
       access_token_secret: "u8grSR32hCi2DJU5L7rgH1uqSKVBmKNdTNRpe3wI4bSeh",
+      version: '2', // Use Twitter API v2
     });
 
-    console.log(twitClient)
+    console.log(twitterClient);
 
-    await twitClient.post('statuses/update', { status: tweetContent });
+    // Update the tweet status using the v2 endpoint
+    await twitterClient.post('tweets', {
+      tweet: {
+        text: tweetContent,
+      },
+    });
 
     res.status(200).json({ message: 'Tweet sent successfully' });
   } catch (error) {
