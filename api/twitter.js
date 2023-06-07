@@ -24,18 +24,18 @@ router.post('/tweets', async (req, res) => {
 
     console.log(twitterClient);
 
-    // Update the tweet status using the v2 endpoint
-    await twitterClient.post('tweets', {
-      tweet: {
-        text: tweetContent,
-      },
-    });
+  // Update the tweet status using the v2 endpoint
+const tweetResponse = await twitterClient.post('tweets', {
+  text: tweetContent,
+});
 
-    res.status(200).json({ message: 'Tweet sent successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error posting tweet' });
-  }
+if (tweetResponse.errors) {
+  // Handle any errors returned by the API
+  console.error(tweetResponse.errors);
+  res.status(500).json({ error: 'Error posting tweet' });
+} else {
+  res.status(200).json({ message: 'Tweet sent successfully' });
+}
 });
 
 module.exports = router;
