@@ -29,9 +29,14 @@ router.post('/tweets', async (req, res) => {
     console.log(twitterClient);
 
     // Update the tweet status using the v2 endpoint
-    const tweetResponse = await twitterClient.post('tweets', {
-      text: tweetContent,
-    });
+    // Update the tweet status using the v2 endpoint
+const tweetResponse = await twitterClient.post('tweets', {
+  status: tweetContent,
+}, {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
     if (tweetResponse.errors) {
       // Handle any errors returned by the API
