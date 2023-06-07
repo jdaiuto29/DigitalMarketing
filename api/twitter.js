@@ -10,15 +10,13 @@ router.post('/tweets', async (req, res) => {
 
   try {
     const user = await models.User.findOne({ where: { id: userId } });
-    console.log(user)
-    console.log(user.twitter)
     if (!user || !user.twitter) {
       return res.status(404).json({ error: 'User tokens not found' });
     }
 
     const twitClient = new Twit({
-        consumerKey: '7tVzrnl36nY4HRuFfgylqbTsw',
-        consumerSecret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
+      consumer_key: '7tVzrnl36nY4HRuFfgylqbTsw',
+      consumer_secret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
       access_token: user.twitter.twitterToken,
       access_token_secret: user.twitter.twitterSecret,
     });
