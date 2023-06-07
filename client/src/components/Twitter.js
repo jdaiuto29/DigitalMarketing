@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+
 function Twitter() {
     const [tweetContent, setTweetContent] = useState('');
 
@@ -9,7 +10,6 @@ function Twitter() {
         try {
             const response = await axios.post('api/v1/twitter/tweets', {
                 tweetContent,
-                userId: 123, // The user ID associated with the tokens
             });
             console.log(response.data); // Tweet sent successfully message
         } catch (error) {
