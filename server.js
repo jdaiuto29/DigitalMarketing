@@ -12,6 +12,8 @@ const TwitterStrategy = require('passport-twitter').Strategy;
 const SequelizeSession = require('connect-session-sequelize')(session.Store)
 const store = new SequelizeSession({ db: db.sequelize })
 const usersRouter = require('./api/users');
+const twitterRouter = require('./api/twitter');
+
 const cors = require("cors");
 
 const app = express();
@@ -42,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 
 app.use('/api/v1/users', usersRouter);
-// app.use('/api/v1/twitter', twitterRouter);
+app.use('/api/v1/twitter', twitterRouter);
 
 // Configure Twitter authentication strategy
 passport.use(new TwitterStrategy({

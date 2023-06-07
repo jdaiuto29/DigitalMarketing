@@ -7,7 +7,7 @@ function Twitter() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/tweets', {
+            const response = await axios.post('api/v1/twitter/tweets', {
                 tweetContent,
                 userId: 123, // The user ID associated with the tokens
             });
