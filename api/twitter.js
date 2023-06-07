@@ -13,10 +13,9 @@ router.post('/tweets', async (req, res) => {
     if (!user || !user.twitter) {
       return res.status(404).json({ error: 'User tokens not found' });
     }
-console.log(user.twitter.twitterToken)
-console.log(user.twitter.twitterSecret)
-const twitterToken = user.twitter.get('twitterToken');
-const twitterSecret = user.twitter.get('twitterSecret');
+
+const twitterToken = user.twitter.twitterToken
+const twitterSecret = user.twitter.twitterSecret
 
 console.log(twitterToken);
 console.log(twitterSecret);
