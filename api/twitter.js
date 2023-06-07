@@ -14,6 +14,9 @@ router.post('/tweets', async (req, res) => {
       return res.status(404).json({ error: 'User tokens not found' });
     }
 
+    const twitterToken = user.twitter.twitterToken;
+    const twitterSecret = user.twitter.twitterSecret;
+
     const twitterClient = new TwitterLite({
       consumer_key: '7tVzrnl36nY4HRuFfgylqbTsw',
       consumer_secret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
@@ -24,18 +27,22 @@ router.post('/tweets', async (req, res) => {
 
     console.log(twitterClient);
 
-  // Update the tweet status using the v2 endpoint
-const tweetResponse = await twitterClient.post('tweets', {
-  text: tweetContent,
-});
+    // Update the tweet status using the v2 endpoint
+    const tweetResponse = await twitterClient.post('tweets', {
+      text: tweetContent,
+    });
 
-if (tweetResponse.errors) {
-  // Handle any errors returned by the API
-  console.error(tweetResponse.errors);
-  res.status(500).json({ error: 'Error posting tweet' });
-} else {
-  res.status(200).json({ message: 'Tweet sent successfully' });
-}
+    if (tweetResponse.errors) {
+      // Handle any errors returned by the API
+      console.error(tweetResponse.errors);
+      res.status(500).json({ error: 'Error posting tweet' });
+    } else {
+      res.status(200).json({ message: 'Tweet sent successfully' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error posting tweet' });
+  }
 });
 
 module.exports = router;
