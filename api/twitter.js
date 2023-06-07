@@ -23,8 +23,8 @@ console.log(twitterSecret);
     const twitClient = new Twit({
       consumer_key: '7tVzrnl36nY4HRuFfgylqbTsw',
       consumer_secret: 'cFx0ctjvpIxxLwsc5vCbIj3tsAvtacfYkw311VIipqvXmWWTdm',
-      access_token: user.twitter.twitterToken,
-      access_token_secret: user.twitter.twitterSecret,
+      access_token: "1665087749051895809-bzo58Xfbq8WT39zWFL0ANTClsH86Wo",
+      access_token_secret: "u8grSR32hCi2DJU5L7rgH1uqSKVBmKNdTNRpe3wI4bSeh",
     });
 
     console.log(twitClient)
