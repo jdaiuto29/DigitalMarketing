@@ -4,7 +4,7 @@ const models = require('../models'); // Assuming you have a User model defined
 const Twit = require('twit');
 
 // API endpoint to send tweets
-app.post('/tweets', async (req, res) => {
+router.post('/tweets', async (req, res) => {
     const { tweetContent } = req.body;
     const userId = req.session.user.id
   
