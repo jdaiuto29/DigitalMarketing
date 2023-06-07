@@ -8,7 +8,7 @@ function Twitter() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('api/v1/twitter/tweets', {
+            const response = await axios.post('/api/v1/twitter/tweets', {
                 tweetContent,
             });
             console.log(response.data); // Tweet sent successfully message
