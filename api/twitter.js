@@ -6,10 +6,12 @@ const Twit = require('twit');
 // API endpoint to send tweets
 router.post('/tweets', async (req, res) => {
   const { tweetContent } = req.body;
-  const userId = req.session.user.id;
+  const userId = req.session.userId;
 
   try {
     const user = await models.User.findOne({ where: { id: userId } });
+    console.log(user)
+    console.log(user.twitter)
     if (!user || !user.twitter) {
       return res.status(404).json({ error: 'User tokens not found' });
     }
