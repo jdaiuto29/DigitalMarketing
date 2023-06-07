@@ -23,6 +23,7 @@ router.post('/tweets', async (req, res) => {
       access_token_key: "1665087749051895809-bzo58Xfbq8WT39zWFL0ANTClsH86Wo",
       access_token_secret: "u8grSR32hCi2DJU5L7rgH1uqSKVBmKNdTNRpe3wI4bSeh",
       version: '2', // Use Twitter API v2
+      extension: false, // true is the default (this must be set to false for v2 endpoints)
     });
 
     console.log(twitterClient);
